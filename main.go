@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
@@ -9,6 +10,30 @@ import (
 func main() {
 	code := handleFile(os.Args[1])
 
+	code = colourise(code, fileType(os.Args[1]))
+	lineLength := displayContents(code)
+
+	fmt.Printf(strings.Repeat("-", lineLength+4))
+	fmt.Printf("\nFilename: \t%s\n", os.Args[1])
+	fmt.Printf("LineCount: \t%d\n", len(code))
+	fmt.Printf("Language: \t%s\n", fileType(os.Args[1]))
+	fmt.Printf(strings.Repeat("-", lineLength+4))
+	fmt.Println()
+}
+
+func colourise(code []string, language string) []string {
+	config := handleConfig()
+	for _, l := range config.Languages {
+		if language == l.Language {
+			for _, keywordColour := range l.Colours.Keywords {
+				fmt.Println(keywordColour.Option)
+			}
+		}
+	}
+	return code
+}
+
+func displayContents(code []string) int {
 	lineLength := 0
 	for lineCount, line := range code {
 		fmt.Printf("%d | %s\n", lineCount+1, line)
@@ -16,12 +41,7 @@ func main() {
 			lineLength = len(line)
 		}
 	}
-	fmt.Printf(strings.Repeat("-", lineLength+4))
-	fmt.Printf("\nFilename: \t%s\n", os.Args[1])
-	fmt.Printf("LineCount: \t%d\n", len(code))
-	fmt.Printf("Language: \t%s\n", fileType(os.Args[1]))
-	fmt.Printf(strings.Repeat("-", lineLength+4))
-	fmt.Println()
+	return lineLength
 }
 
 func handleFile(filename string) []string {
@@ -64,8 +84,9 @@ func fileType(ending string) string {
 	}
 }
 
-/*
-func handleConfig() {
+func handleConfig() Config {
 	file, _ := os.ReadFile("config.json")
 	var config Config
-}*/
+	json.Unmarshal(file, &config)
+	return config
+}

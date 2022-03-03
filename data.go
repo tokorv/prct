@@ -19,6 +19,6 @@ type ColourSetting struct {
 }
 
 type ColourOption struct {
-	Name   string `json:"option"`
+	Option   string `json:"option"`
 	Colour string `json:"colours"`
 }

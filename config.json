@@ -1,0 +1,27 @@
+{
+    "config": [
+        [
+            {
+                "language": "ReCT",
+                "extension": "rct",
+                "colours": {
+                    "keywords": [
+                        {
+                            "option": "function",
+                            "colour": "magenta"
+                        }
+                    ],
+                    "strings": "magenta",
+                    "integers": "green",
+                    "floats": "black",
+                    "operators": [
+                        {
+                            "option": "#",
+                            "colour": "red"
+                        }
+                    ]
+                }
+            }
+        ]
+    ]
+}
